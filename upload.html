@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8" />
+<title>Upload TEST</title>
+</head>
+<body>
+	<p>Select Image</p>
+
+	<form action="upload.php" method="post" enctype="multipart/form-data">
+    	<input id="upfile" type="file" name="img"><br>
+		<img id="thumb" width="400">
+    	<div id="info"></div><br>
+    	<input id="b64" name="ufile" type=text value="" />
+        <input id="upbtn" type="submit" value="UPLOAD" />
+    </form>
+
+    <script type="text/javascript">
+	
+	showImage(false);
+	var targetfile = null;
+	
+	
+	$("#upfile").onchange = function(evt){
+		showImage(false);
+		var files = evt.target.files;
+		if(files.length == 0) return;
+		targetFile = files[0];
+		if(!targetFile.type.match(/image/)) {
+			alert('Select Image File');
+			//return;
+		}
+		var breader = new FileReader();
+	    breader.onload = readPNGFile;
+		breader.readAsBinaryString(targetFile);
+	}
+	
+	function readPNGFile(evt) {
+		var bin = evt.target.result;
+		var sig = String.fromCharCode( 0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a);
+		var head = bin.substr(0, 8);
+		if(sig != head) {
+			alert("It does'nt PNG");
+			//return;
+		}
+
+		showImage(true);
+		var width = getBinValue(bin, 8 + 0x08, 4);
+		var height = getBinValue(bin, 8 + 0x0c, 4);
+		var depth = bin.charCodeAt(8 + 0x10);
+		
+		$("#info").innerHTML =
+			"width: " + width + "px<br>" +
+			"height: " + height + "px<br>" +
+			"depth: " + depth + "bit";
+		var reader = new FileReader();
+		reader.onload = function(e) {
+			//$("#thumb").src = reader.result;
+			$("#b64").value=reader.result;
+		}
+		reader.readAsDataURL(targetFile)
+	}
+	
+	function getBinValue(bin, i, size) {
+		var v = 0;
+		for(var j= 0; j < size; j++){
+			var b = bin.charCodeAt(i + j);
+			v = (v << 8) + b;
+		}
+		return v;
+	}
+	
+	function showImage(b) {
+		var val = b ? "block" : "none";
+		$("#upbtn").style.display = val;
+		$("#thumb").style.display = val;
+		$("#info").style.display = val;
+	}
+	
+	function $(id) {
+		return document.querySelector(id);
+	}
+	</script>
+
+    </body>
+</html>

@@ -1,0 +1,66 @@
+> show columns from  advent;
+
+
+ALTER TABLE advent ADD INDEX xyselect(x, y);
+
+SHOW CREATE TABLE
+create database awdb;
+
+sudo mysql awdb
+create table angels(sessionId text, name text , team text, fight int,move int ,impact int);
+
+alter table angels add x int, y int;
+
+alter table angels add id int auto_increment primary key not null  FIRST;
+
+create table history(id int ,day int ,story text, x int , y int);
+
+create table script(mode int, number int,message text);
+LOAD DATA LOCAL INFILE "./message.csv" INTO TABLE script FIELDS TERMINATED BY ',' OPTIONALLY ENCLOSED BY '"';
+
+558 94
+
+mode: 0:無色降臨　1:敵地降臨　2:自陣降臨　3:会敵降臨　
+　　　10:無色教化 11:自陣教化 12:敵陣教化 
+　　　20:会敵勝利　21:会敵負け　22:会敵引き分け
+　　　30:移動
+　　　40:天昇
+number: メッセージ番号 0からスタート
+message:   $name  名前　　　$team　自分 　　　$rev  敵
+
+
+１　初期処理
+    DB接続
+    スリープ時間の設定
+    各メッセージの最小値と最大値を取得
+
+２　降臨の処理
+    現状を引っ張ってくる
+    （調べるXY,　Rレベル、Bレベル、敵の有無）
+        ・無色の地
+        ・敵地
+        ・会敵
+        ・自陣
+    パターンに応じてDBから文言を引っ張ってくる
+
+
+
+
+３　ループ処理
+    スリープ処理
+    現状を引っ張ってくる
+    教化処理とメッセージ設定
+        ・無色
+        ・自陣
+        ・敵陣
+    会敵処理
+        自戦闘力＊自陣レベル　vs 敵戦闘力×敵陣レベル
+        勝った方は移動力が８０％増し、負けると８０％減衰
+        敵陣１０％増、自陣１０％減
+        勝った、負けた、引き分け
+        
+    移動処理
+        移動力がなければ帰還メッセージ
+        もともといたところには戻らない
+        ランダムに移動処理を行う
+        移動力をマイナス１

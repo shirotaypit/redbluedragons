@@ -1,0 +1,52 @@
+.red_btn{
+    border: 0px;
+    width:200;
+    height:200;
+    background: url(./DragonRed.png) left top no-repeat;
+    background-size: contain;
+}
+
+.blue_btn{
+    border: 0px;
+    width:200;
+    height:200;
+    background: url(./DragonBlue.png) left top no-repeat;
+    background-size: contain;
+}
+
+.red_btn{
+  animation: img_box_9955 4s linear infinite;
+  transform-origin: 50% 80%;
+  margin: 1rem 0 !important;
+}
+
+.blue_btn{
+  animation: img_box_9955 3s linear infinite;
+  transform-origin: 30% 50%;
+  margin: 1rem 0 !important;
+}
+ 
+@keyframes img_box_9955 {
+  0% { transform: translateY(0) }
+  33.33333% { transform: translateY(-10px) }
+  66.66667% { transform: translateY(0) }
+  100% { transform: translateY(0) }
+}
+
+/* ----- 背景用の動画ファイル ----- */
+#bg-video{
+ position: fixed;
+ z-index: -100;
+ /*background-size:  cover;*/
+}
+/* ----- 背景の上に表示させたいコンテンツ ----- */
+.header-title{
+ position: relative; /*必ず必要*/
+ z-index: 2; /*必ず必要*/
+ display: flex;
+ width: 100vh;
+ justify-content: center;
+ align-items: center;
+ text-align:center;
+ margin: auto;
+}
